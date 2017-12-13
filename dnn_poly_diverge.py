@@ -110,6 +110,8 @@ if __name__ == '__main__':
 
     # Indicate save folder
     save_dir = 'dnn_poly_diverge_output'
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
 
     # Define characteristics of training and test data
     train_domain = 5
