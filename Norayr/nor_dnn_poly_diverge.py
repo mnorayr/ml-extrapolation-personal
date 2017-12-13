@@ -57,7 +57,7 @@ model = H2ODeepLearningEstimator(
 )
 model.train(x=predictors, y=response, training_frame=train, validation_frame=val)
 
-
+## Predicting
 test_df['predict'] = model.predict(test).as_data_frame()
 print model.model_performance(test)
 
