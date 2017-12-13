@@ -12,17 +12,17 @@ columns = ['x', 'y']
 column_types = ['real', 'real']
 
 ## Generate dataset for y = x^n
-n=3
+n=2
 df = pd.DataFrame(columns=columns)
 df['x'] = [0.001 * i for i in range(-10000, 10000)]
 df['y'] = df.apply(lambda row: row['x'] ** n, axis=1)
-df.to_csv("~/data/poly_train.csv", index=False, header=True)
+df.to_csv("~/data/poly_train_{!s}.csv".format(n), index=False, header=True)
 
 ## Create test set with domain outside training
 test_df = pd.DataFrame(columns=columns)
 test_df['x'] = [0.001 * i for i in range(-15000, 15000)]
 test_df['y'] = test_df.apply(lambda row: row['x'] ** n, axis=1)
-test_df.to_csv("~/data/poly_test.csv", index=False, header=True)
+test_df.to_csv("~/data/poly_test_{!s}.csv".format(n), index=False, header=True)
 
 ## Create H2OFrame
 h2o.remove_all()
@@ -36,12 +36,12 @@ response = 'y'
 model = H2ODeepLearningEstimator(
     model_id='dnn_poly',
     epochs=5000,
-    hidden=[100, 100],
-    activation='rectifier',
-    # hidden_dropout_ratios=[0.5, 0.5],
+    hidden=[1000, 1000],
+    activation= 'maxoutwithdropout',# 'rectifierwithdropout', #'rectifier',#
+    hidden_dropout_ratios=[0.5, 0.5],
     l1=1e-6,
     l2=1e-6,
-    max_w2=1000.,
+    max_w2=10.,
     stopping_rounds=10,
     # stopping_tolerance=1e-4,
     stopping_metric='rmse',
