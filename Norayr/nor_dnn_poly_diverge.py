@@ -37,8 +37,8 @@ model = H2ODeepLearningEstimator(
     model_id='dnn_poly',
     epochs=5000,
     hidden=[1000, 1000],
-    activation= 'maxoutwithdropout',# 'rectifierwithdropout', #'rectifier',#
-    hidden_dropout_ratios=[0.5, 0.5],
+    activation= 'rectifier',#'maxoutwithdropout',# 'rectifierwithdropout', #
+    # hidden_dropout_ratios=[0.5, 0.5],
     l1=1e-6,
     l2=1e-6,
     max_w2=10.,
@@ -51,7 +51,7 @@ model = H2ODeepLearningEstimator(
     score_duty_cycle=1,
     shuffle_training_data=False,
     replicate_training_data=True,
-    train_samples_per_iteration=int(10 * len(df) / 1.258),
+    train_samples_per_iteration=int(0.1 * len(df) / 1.258),
 
     # Controlling momentum
 )
