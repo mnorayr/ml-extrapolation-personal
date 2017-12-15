@@ -47,14 +47,14 @@ def create_model(params):
     pred_test = model.predict(test).as_data_frame()
 
     # Plot real data
-    plt.plot(df_train_val['x'], df_train_val['y'])
-    plt.plot(df_test['x'][:len(df_test)/2], df_test['y'][:len(df_test)/2])
-    plt.plot(df_test['x'][len(df_test)/2:], df_test['y'][len(df_test)/2:])
+    plt.plot(df_train_val['x'], df_train_val['y'], color='orange')
+    plt.plot(df_test['x'][:len(df_test)/2], df_test['y'][:len(df_test)/2], color='orange')
+    plt.plot(df_test['x'][len(df_test)/2:], df_test['y'][len(df_test)/2:], color='orange')
 
     # Plot model predictions
-    plt.plot(df_train_val['x'], pred_train_val)
-    plt.plot(df_test['x'][:len(df_test)/2], pred_test[:len(pred_test)/2])
-    plt.plot(df_test['x'][len(df_test)/2:], pred_test[len(pred_test)/2:])
+    plt.plot(df_train_val['x'], pred_train_val, color='blue')
+    plt.plot(df_test['x'][:len(df_test)/2], pred_test[:len(pred_test)/2], color='blue')
+    plt.plot(df_test['x'][len(df_test)/2:], pred_test[len(pred_test)/2:], color='blue')
 
     # Get model metrics
     test_rmse = '{:.1f}'.format(model.model_performance(test).rmse())
