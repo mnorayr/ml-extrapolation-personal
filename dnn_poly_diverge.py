@@ -2,7 +2,6 @@ import os
 import h2o
 import pandas as pd
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 from h2o.estimators.deeplearning import H2ODeepLearningEstimator
 
 
@@ -59,9 +58,9 @@ def create_model(params):
     plt.plot(df_test['x'][len(df_test)/2:], df_test['y'][len(df_test)/2:], color='orange')
 
     # Plot model predictions
-    plt.plot(df_train_val['x'], pred_train_val, color='blue')
-    plt.plot(df_test['x'][:len(df_test)/2], pred_test[:len(pred_test)/2], color='blue')
-    plt.plot(df_test['x'][len(df_test)/2:], pred_test[len(pred_test)/2:], color='blue')
+    plt.plot(df_train_val['x'], pred_train_val, color='darkgreen')
+    plt.plot(df_test['x'][:len(df_test)/2], pred_test[:len(pred_test)/2], color='darkblue')
+    plt.plot(df_test['x'][len(df_test)/2:], pred_test[len(pred_test)/2:], color='darkblue')
 
     # Get model metrics
     test_rmse = '{:.1f}'.format(model.model_performance(test).rmse())
@@ -108,36 +107,33 @@ def create_model(params):
 def main():
 
     # Load hyperparameters
-    hyper_params = [
-        dict(
-            model_id='dnn_poly',
-            epochs=50,
-            hidden=[100],
-            activation='maxout_with_dropout',
-            hidden_dropout_ratios=[0.1],
-            l1=1e-4,
-            l2=1e-4,
-            max_w2=0.2,
-            stopping_rounds=10,
-            stopping_tolerance=1e-4,
-            stopping_metric='rmse',
+    params = dict(
+        model_id='dnn_poly',
+        epochs=5000,
+        hidden=[300, 300],
+        activation='tanh_with_dropout',
+        hidden_dropout_ratios=[0.5, 0.5],
+        l1=1e-4,
+        l2=1e-4,
+        max_w2=0.2,
+        stopping_rounds=10,
+        stopping_tolerance=1e-4,
+        stopping_metric='rmse',
 
-            # Control scoring epochs
-            score_interval=0,
-            score_duty_cycle=1,
-            shuffle_training_data=False,
-            replicate_training_data=True,
-            epochs_per_iteration=1,
+        # Control scoring epochs
+        score_interval=0,
+        score_duty_cycle=1,
+        shuffle_training_data=False,
+        replicate_training_data=True,
+        epochs_per_iteration=1,
 
-            # Controlling momentum
-            rate=1e-5,
-            rate_annealing=1e-10,
-        ),
-    ]
+        # Control momentum
+        rate=1e-5,
+        rate_annealing=1e-10,
+    )
 
-    # Loop through hyperparameters
-    for params in tqdm(hyper_params):
-        create_model(params)
+    # Create model
+    create_model(params)
 
 
 if __name__ == '__main__':
