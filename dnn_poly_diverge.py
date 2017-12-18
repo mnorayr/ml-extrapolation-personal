@@ -101,8 +101,8 @@ def create_model(params):
     # Save plot
     plt.savefig('{}.svg'.format(os.path.join(save_dir, name)))
 
-    # Close plot
-    plt.close()
+    # Show plot
+    plt.show()
 
 
 def main():
@@ -111,8 +111,8 @@ def main():
     hyper_params = [
         dict(
             model_id='dnn_poly',
-            epochs=5000,
-            hidden=[1000],
+            epochs=50,
+            hidden=[100],
             activation='maxout_with_dropout',
             hidden_dropout_ratios=[0.1],
             l1=1e-4,
