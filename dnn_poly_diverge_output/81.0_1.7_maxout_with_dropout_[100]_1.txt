@@ -1,0 +1,24 @@
+test_rmse = 81.0
+train_val_rmse = 1.7
+
+epochs = 5000
+hidden = [100]
+activation = maxout_with_dropout
+hidden_dropout_ratios = [0.1]
+l1 = 0.0001
+l2 = 0.0001
+max_w2 = 0.2
+stopping_rounds = 10
+stopping_tolerance = 0.0001
+stopping_metric = rmse
+score_interval = 0
+score_duty_cycle = 1
+epochs_per_iteration = 1
+adaptive_rate = None
+rho = None
+epsilon = Nonerate = 1e-05
+rate_annealing = 1e-10
+momentum_start = None
+momentum_ramp = None
+momentum_stable = None
+initial_weight_distribution = None
