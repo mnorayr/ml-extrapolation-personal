@@ -59,8 +59,6 @@ def main():
         shuffle_training_data=False,
         replicate_training_data=True,
         train_samples_per_iteration=int(0.5 * len(df) / 1.258),
-
-        Controlling momentum
     )
     model.train(x=predictors, y=response, training_frame=train, validation_frame=val)
 
