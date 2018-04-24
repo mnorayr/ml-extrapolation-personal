@@ -139,7 +139,7 @@ def main():
 if __name__ == '__main__':
 
     # Start h2o
-    h2o.init(ip='192.168.0.41', port=65432, max_mem_size_GB=128, nthreads=70)
+    h2o.init(ip='localhost', port=54321, max_mem_size_GB=128, nthreads=70)
 
     # Indicate save folder
     save_dir = 'dnn_poly_diverge_output'
