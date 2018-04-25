@@ -1,39 +1,37 @@
-#test 3 
-
-
+### test 3 
 import h2o
 import pandas as pd
 import matplotlib.pyplot as plt
 from h2o.estimators.deeplearning import H2ODeepLearningEstimator
 
 
-## Start h2o
+### Start h2o
 h2o.init(ip='localhost', port=65432, max_mem_size_GB=128, nthreads=70)
 
-## Define columns and types
+### Define columns and types
 columns = ['x', 'y']
 column_types = ['real', 'real']
 
-## Generate dataset for y = x^n
-n=2
+### Generate dataset for y = x^n
+n=3
 df = pd.DataFrame(columns=columns)
 df['x'] = [0.001 * i for i in range(-10000, 10000)]
 df['y'] = df.apply(lambda row: row['x'] ** n, axis=1)
 df.to_csv("~/data/poly_train_{!s}.csv".format(n), index=False, header=True)
 
-## Create test set with domain outside training
+### Create test set with domain outside training
 test_df = pd.DataFrame(columns=columns)
 test_df['x'] = [0.001 * i for i in range(-15000, 15000)]
 test_df['y'] = test_df.apply(lambda row: row['x'] ** n, axis=1)
 test_df.to_csv("~/data/poly_test_{!s}.csv".format(n), index=False, header=True)
 
-## Create H2OFrame
+### Create H2OFrame
 h2o.remove_all()
 hf = h2o.H2OFrame(df, column_types=column_types)
 train, val = hf.split_frame(ratios=[0.8])
 test = h2o.H2OFrame(test_df, column_types=column_types)
 
-## Create model
+### Create model
 predictors = 'x'
 response = 'y'
 model = H2ODeepLearningEstimator(
@@ -60,11 +58,11 @@ model = H2ODeepLearningEstimator(
 )
 model.train(x=predictors, y=response, training_frame=train, validation_frame=val)
 
-## Predicting
+### Predicting
 test_df['predict'] = model.predict(test).as_data_frame()
 print model.model_performance(test)
 
-## Plot results
+### Plot results
 driverless_predict = pd.DataFrame(columns=['x', 'y'])
 driverless_predict['x'] = test_df['x']
 driverless_predict['y'] = pd.read_csv('/home/norayrm/Downloads/test_preds.csv')
@@ -72,3 +70,6 @@ plt.plot(test_df['x'], test_df['y'])
 plt.plot(test_df['x'], test_df['predict'])
 plt.plot(driverless_predict['x'], driverless_predict['y'])
 plt.show()
+
+########################
+
