@@ -4,10 +4,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from h2o.estimators.deeplearning import H2ODeepLearningEstimator
+<<<<<<< HEAD
 from h2o.automl import H2OAutoML
 
 def poly_df(domain, density,n=2, gap=0):
     """Generates y = x^n over a symmetrical domain with a symmetrical gap.
+=======
+
+
+def poly_df(domain, density, gap=0):
+    """Generates y = x^2 over a symmetrical domain with a symmetrical gap.
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
 
     Args:
         domain (int): Absolute value of max/min x-value.
@@ -23,11 +30,19 @@ def poly_df(domain, density,n=2, gap=0):
     df = pd.DataFrame(columns=['x', 'y'])
     df['x'] = [1.0 / density * i for i in range(-data_limit, -gap_limit)] + \
               [1.0 / density * i for i in range(gap_limit, data_limit)]
+<<<<<<< HEAD
     df['y'] = df.apply(lambda row: row['x']**n, axis=1)
 
     return df
 
 ### 
+=======
+    df['y'] = df.apply(lambda row: row['x']**2, axis=1)
+
+    return df
+
+
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
 def create_model(params):
     """Creates model based on parameters.
 
@@ -46,6 +61,7 @@ def create_model(params):
     pred_train_val = model.predict(train_val).as_data_frame()
     pred_test = model.predict(test).as_data_frame()
 
+<<<<<<< HEAD
     # Create and train model
     # Run AutoML for 30 seconds
     aml = H2OAutoML(max_runtime_secs = 1800)
@@ -56,6 +72,8 @@ def create_model(params):
     pred_train_val_aml = aml.predict(train_val).as_data_frame()
     pred_test_aml = aml.predict(test).as_data_frame()
 
+=======
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
     # Plot real data
     plt.plot(df_train_val['x'], df_train_val['y'], color='orange')
     plt.plot(df_test['x'][:len(df_test)/2], df_test['y'][:len(df_test)/2], color='orange')
@@ -66,6 +84,7 @@ def create_model(params):
     plt.plot(df_test['x'][:len(df_test)/2], pred_test[:len(pred_test)/2], color='blue')
     plt.plot(df_test['x'][len(df_test)/2:], pred_test[len(pred_test)/2:], color='blue')
 
+<<<<<<< HEAD
     # Plot aml model predictions
     plt.plot(df_train_val_aml['x'], pred_train_val, color='green')
     plt.plot(df_test_aml['x'][:len(df_test)/2], pred_test[:len(pred_test)/2],
@@ -73,6 +92,8 @@ def create_model(params):
     plt.plot(df_test_aml['x'][len(df_test)/2:], pred_test[len(pred_test)/2:],
              color='green')
 
+=======
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
     # Get model metrics
     test_rmse = '{:.1f}'.format(model.model_performance(test).rmse())
     train_val_rmse = '{:.1f}'.format(model.model_performance(train_val).rmse())
@@ -83,14 +104,18 @@ def create_model(params):
     h2o.save_model(model, os.path.join(save_dir, name))
     plt.savefig('{}.svg'.format(os.path.join(save_dir, name)))
 
+<<<<<<< HEAD
     # Save aml model and plot
     name = '"AML_",{0}_{1}_{2}_{3}'.format(test_rmse, train_val_rmse)
     h2o.save_model(aml, os.path.join(save_dir, name))
     plt.savefig('{}.svg'.format(os.path.join(save_dir, name)))
+=======
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
     # Close plot
     plt.close()
 
 
+<<<<<<< HEAD
     # View the AutoML Leaderboard
     lb = aml.leaderboard
     print lb
@@ -100,11 +125,14 @@ def create_model(params):
 
 
 
+=======
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
 def main():
 
     # Load hyperparameters
     hyper_params = [
         dict(
+<<<<<<< HEAD
              model_id='dnn_poly',
              epochs=5000,
              hidden=[1000, 1000],
@@ -126,6 +154,28 @@ def main():
 
 
         # Controlling momentum
+=======
+            model_id='dnn_poly',
+            epochs=5000,
+            hidden=[1000, 1000],
+            activation='rectifier',  # 'maxoutwithdropout',# 'rectifierwithdropout', #
+            # hidden_dropout_ratios=[0.5, 0.5],
+            l1=1e-6,
+            l2=1e-6,
+            max_w2=10.,
+            stopping_rounds=10,
+            # stopping_tolerance=1e-4,
+            stopping_metric='rmse',
+
+            # Control scoring epochs
+            score_interval=0,
+            score_duty_cycle=1,
+            shuffle_training_data=False,
+            replicate_training_data=True,
+            train_samples_per_iteration=int(0.1 * len(df_train_val) / 1.258),
+
+            # Controlling momentum
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
         ),
     ]
 
@@ -133,7 +183,11 @@ def main():
     for params in tqdm(hyper_params):
         create_model(params)
 
+<<<<<<< HEAD
 ###
+=======
+
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
 if __name__ == '__main__':
 
     # Start h2o
@@ -148,11 +202,18 @@ if __name__ == '__main__':
     train_domain = 5
     test_domain = 10
     density = 10000
+<<<<<<< HEAD
     n=4
 
     # Generate training and test sets
     df_train_val = poly_df(train_domain, density,n)
     df_test = poly_df(test_domain, density,n, gap=train_domain)
+=======
+
+    # Generate training and test sets
+    df_train_val = poly_df(train_domain, density)
+    df_test = poly_df(test_domain, density, gap=train_domain)
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
 
     # Create train, validation, test frames
     column_types = ['real', 'real']
@@ -162,5 +223,8 @@ if __name__ == '__main__':
 
     # Run main function
     main()
+<<<<<<< HEAD
 
 ###    
+=======
+>>>>>>> 4e2403de20cc3cda36af57b8044ca854378b04f6
